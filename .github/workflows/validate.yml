@@ -1,0 +1,16 @@
+name: Validar site
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validar index.html
+        run: python3 scripts/validate.py index.html
