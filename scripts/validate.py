@@ -46,6 +46,12 @@ def validate(path="index.html"):
     if "</script>" in template_raw:
         errors.append("</script> sem escape encontrado no JSON — vai quebrar o bundler.")
 
+    # 2.1. Depois do JSON.parse, o HTML precisa ter </script> real.
+    # Se ainda sobrar <\/script>, o navegador trata o fechamento como texto e
+    # scripts grandes podem engolir o restante da pagina.
+    if "<\\/script>" in html:
+        errors.append("Fechamento de script superescapado (<\\/script>) encontrado no HTML final.")
+
     # 3. Conteúdo obrigatório presente no HTML
     for item in REQUIRED_CONTENT:
         if item not in html:
